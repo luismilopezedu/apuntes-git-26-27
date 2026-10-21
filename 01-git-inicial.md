@@ -3,7 +3,7 @@
     - [1.1.1. Git vs sistemas centralizados](#111-git-vs-sistemas-centralizados)
     - [1.1.2. ¿Qué es un hash?](#112-qué-es-un-hash)
   - [1.2. Conceptos clave en Git](#12-conceptos-clave-en-git)
-    - [1.2.1. Repositorio (repository)](#121-repositorio-repository)
+    - [1.2.1. Repositorio (Repository)](#121-repositorio-repository)
     - [1.2.2. Commit (confirmación)](#122-commit-confirmación)
     - [1.2.3. Área de preparación (staging area)](#123-área-de-preparación-staging-area)
     - [1.2.4. Directorio de trabajo (working directory)](#124-directorio-de-trabajo-working-directory)
@@ -91,10 +91,6 @@ Git es **distribuido**: cada desarrollador tiene una copia completa del historia
 
 > ⚠️ **Error común:** Pensar que "distribuido" significa que cada uno tiene una versión diferente. No: todos tienen la **misma información completa**, pero de forma independiente.
 
-### 1.1.2. ¿Qué es un hash?
-
-Un **hash** es como una contraseña única que Git genera automáticamente para cada commit. Si cambias UNA letra del código, el hash cambia completamente. Git usa el algoritmo SHA-1 para generar hashes de 40 caracteres (ej: `a1b2c3d4e5f6...`). Esto garantiza la integridad: nadie puede manipular un commit sin que se detecte.
-
 |Característica| Git | SVN |
 |--------------|---|---|
 | **Riesgo de pérdida** | Mínimo — cada copia es un backup completo | Alto — si el servidor cae sin backup, pierdes todo |
@@ -102,6 +98,12 @@ Un **hash** es como una contraseña única que Git genera automáticamente para 
 | **Recta de aprendizaje** | Pronunciada al principio, plana después | Suave al principio, problemática después |
 
 > 📝 **Conclusión del profesor:** Git es más complejo al principio, pero una vez que lo dominas, te da una libertad total. SVN es más fácil de empezar, pero te limita mucho a largo plazo. Por eso la industria entera usa Git.
+
+
+### 1.1.2. ¿Qué es un hash?
+
+Un **hash** es como una contraseña única que Git genera automáticamente para cada commit. Si cambias UNA letra del código, el hash cambia completamente. Git usa el algoritmo SHA-1 para generar hashes de 40 caracteres (ej: `a1b2c3d4e5f6...`). Esto garantiza la integridad: nadie puede manipular un commit sin que se detecte.
+
 
 ## 1.2. Conceptos clave en Git
 
@@ -130,12 +132,12 @@ graph TD
 ```mermaid
 gitGraph
     commit id: "Proyecto inicial"
-    commit id: "Añadir main.cs"
-    commit id: "Añadir Login.cs"
+    commit id: "Añadir Main.java"
+    commit id: "Añadir Login.java"
     commit id: "Fix: error de login"
 ```
 
-### 1.2.1. Repositorio (repository)
+### 1.2.1. Repositorio (Repository)
 
 Es el corazón del proyecto. Donde se almacenan todos los datos actualizados y el historial completo.
 
