@@ -1,6 +1,7 @@
 - [1. Git inicial](#1-git-inicial)
   - [1.1. Introducción a Git](#11-introducción-a-git)
     - [1.1.1. Git vs sistemas centralizados](#111-git-vs-sistemas-centralizados)
+    - [1.1.2. ¿Qué es un hash?](#112-qué-es-un-hash)
   - [1.2. Conceptos clave en Git](#12-conceptos-clave-en-git)
     - [1.2.1. Repositorio (repository)](#121-repositorio-repository)
     - [1.2.2. Commit (confirmación)](#122-commit-confirmación)
@@ -11,14 +12,25 @@
     - [1.3.1. Los tres estados de Git](#131-los-tres-estados-de-git)
   - [1.4. Comandos Git esenciales](#14-comandos-git-esenciales)
     - [1.4.1. Instalación de Git](#141-instalación-de-git)
-    - [1.4.2. Configuración inicial y .gitconfig](#142-configuración-inicial-y-gitconfig)
+      - [Windows](#windows)
+      - [Linux (Debian/Ubuntu)](#linux-debianubuntu)
+      - [Linux (Fedora)](#linux-fedora)
+      - [Linux (Arch Linux)](#linux-arch-linux)
+      - [macOS](#macos)
+    - [1.4.2. Configuración inicial y `.gitconfig`](#142-configuración-inicial-y-gitconfig)
+      - [Comandos de configuración](#comandos-de-configuración)
+      - [El fichero `.gitconfig`](#el-fichero-gitconfig)
+      - [Ejemplo de `.gitconfig` del profesor](#ejemplo-de-gitconfig-del-profesor)
+      - [Explicación de cada sección](#explicación-de-cada-sección)
     - [1.4.3. Creación y clonación de repositorios](#143-creación-y-clonación-de-repositorios)
     - [1.4.4. Gestión de cambios](#144-gestión-de-cambios)
     - [1.4.5. Commit](#145-commit)
     - [1.4.6. Diff](#146-diff)
     - [1.4.7. Historial](#147-historial)
     - [1.4.8. Deshacer cambios](#148-deshacer-cambios)
-      - [1.4.8.1. git restore: deshacer cambios locales](#1481-git-restore-deshacer-cambios-locales)
+      - [Las tres zonas de Git](#las-tres-zonas-de-git)
+      - [Escenario real: "commiteé y subí algo mal"](#escenario-real-commiteé-y-subí-algo-mal)
+      - [1.4.8.1. git restore: deshacer cambios en working tree](#1481-git-restore-deshacer-cambios-en-working-tree)
       - [1.4.8.2. git revert: crear commit que deshace](#1482-git-revert-crear-commit-que-deshace)
       - [1.4.8.3. git reset: mover el puntero HEAD](#1483-git-reset-mover-el-puntero-head)
       - [1.4.8.4. Trucos: eliminar el último commit](#1484-trucos-eliminar-el-último-commit)
@@ -30,6 +42,9 @@
     - [1.4.10. Ignorar archivos](#1410-ignorar-archivos)
     - [1.4.11. Etiquetado (tags)](#1411-etiquetado-tags)
   - [1.5. Guardar cambios temporales](#15-guardar-cambios-temporales)
+  - [1.6. Resumen de comandos básicos](#16-resumen-de-comandos-básicos)
+    - [¿Qué viene después?](#qué-viene-después)
+    - [Ejercicio rápido: tu primer repositorio](#ejercicio-rápido-tu-primer-repositorio)
 
 
 
@@ -79,6 +94,9 @@ Git es **distribuido**: cada desarrollador tiene una copia completa del historia
 ### 1.1.2. ¿Qué es un hash?
 
 Un **hash** es como una contraseña única que Git genera automáticamente para cada commit. Si cambias UNA letra del código, el hash cambia completamente. Git usa el algoritmo SHA-1 para generar hashes de 40 caracteres (ej: `a1b2c3d4e5f6...`). Esto garantiza la integridad: nadie puede manipular un commit sin que se detecte.
+
+|Característica| Git | SVN |
+|--------------|---|---|
 | **Riesgo de pérdida** | Mínimo — cada copia es un backup completo | Alto — si el servidor cae sin backup, pierdes todo |
 | **Complejidad inicial** | Más conceptos que aprender (HEAD, staging, branches) | Más sencillo de entender al principio |
 | **Recta de aprendizaje** | Pronunciada al principio, plana después | Suave al principio, problemática después |
@@ -221,11 +239,11 @@ gitGraph
 
 ### 1.4.1. Instalación de Git
 
-Antes de usar Git, necesitas instalarlo en tu sistema. Los alumnos de 1DAW trabajamos en diferentes sistemas operativos, así que aquí tienes las instrucciones para cada uno.
+Antes de usar Git, necesitas instalarlo en tu sistema. Los alumnos de 1DAM trabajamos en diferentes sistemas operativos, así que aquí tienes las instrucciones para cada uno.
 
 #### Windows
 
-**Opción 1: Con el gestor de paquetes (recomendado)**
+**Opción 1: Con el gestor de paquetes**
 ```powershell
 # Abrir PowerShell como administrador
 winget install Git.Git
@@ -480,7 +498,7 @@ git clone --depth 1 repositorio
 
 > 💡 **Metáfora de `git clone`:** `git clone` es como **fotocopiar toda la biblioteca** y llevártela a casa. No solo copias los libros actuales (archivos), sino también todo el catálogo de cuándo se añadió cada libro (historial). Tienes una copia idéntica y completa.
 
-**Pros de `git clone`:**
+
 ### 1.4.4. Gestión de cambios
 
 El día a día de Git gira en torno al estado de tus archivos, y estos comandos te dejan ver en cuál estás: git status te dice qué has modificado, qué tienes preparado y qué está limpio. Úsalos sin parar: mirar el estado antes de cada commit es un hábito que te salvará más de un susto.
@@ -492,7 +510,7 @@ git status
 # Ver estado resumido
 git status -s
 # Salida: M archivo.txt  (Modified)
-# ?? nuevo_archivo.cs  (Untracked)
+# ?? nuevo_archivo.java  (Untracked)
 
 # Añadir un archivo específico al staging
 git add archivo.txt
@@ -504,7 +522,7 @@ git add .
 git add -u
 
 # Añadir con patrón
-git add *.cs         # Todos los .cs
+git add *.java         # Todos los .java
 git add docs/*.md   # Todos los .md en docs/
 
 # Quitar del staging (mantener cambios)
